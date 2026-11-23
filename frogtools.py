@@ -105,7 +105,35 @@ def report():
         except Exception: pass
     print("Rapport enregistré:",path)
 
-def main():
+
+def disk():
+    print(run_cmd(["wmic","logicaldisk","get","caption,freespace,size"] if os.name=="nt" else ["df","-h"]))
+
+def processes():
+    print(run_cmd(["tasklist"] if os.name=="nt" else ["ps","-eo","pid,comm,%cpu,%mem"]))
+
+def ports():
+    print(run_cmd(["netstat","-ano"] if os.name=="nt" else ["ss","-tuln"]))
+
+def portcheck(arg):
+    try:
+        host,port=arg.rsplit(":",1)
+        port=int(port)
+        if not validate_host(host) or not 1<=port<=65535: raise ValueError()
+        with socket.create_connection((host,port),timeout=3):
+            print(f"Port {port} accessible sur {host}")
+    except Exception: print("Usage: portcheck hôte:port (test ponctuel)")
+
+def open_download():
+    url="https://github.com/saku168/FrogTools/releases"
+    print("Page des versions:",url)
+    try:
+        if os.name=="nt": os.startfile(url)
+        elif platform.system()=="Darwin": subprocess.Popen(["open",url])
+        else: subprocess.Popen(["xdg-open",url])
+    except Exception: print("Ouvre ce lien dans ton navigateur:",url)
+
+\ndef main():
     os.system("")
     banner(); print("Tapez "+G+"help"+R+" pour voir les commandes.\n")
     while True:
@@ -135,7 +163,7 @@ def main():
         elif cmd=="date": print(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         elif cmd=="report": report()
         elif cmd=="clear": os.system("cls" if os.name=="nt" else "clear"); banner()
-        elif cmd=="about": print("FrogTools • toolkit de diagnostic et utilitaires • version 1.1")
+        elif cmd=="about": print("FrogTools v1.2 • Diagnostics & utilitaires\\nGitHub: https://github.com/saku168/FrogTools\\nTéléchargements: https://github.com/saku168/FrogTools/releases\\nCommande download: ouvre la page des versions.")
         elif cmd in ("exit","quit"): break
         else: print(Y+"Commande inconnue. Tapez help."+R)
 if __name__=="__main__": main()
