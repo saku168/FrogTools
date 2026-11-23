@@ -17,7 +17,7 @@ Use `help` in the prompt to see the command list.
 - `hash <text>`: SHA-256 digest
 - `encode <text>`, `decode <text>`: Base64 utilities
 - `password [length]`: random password
-- `uuid`, `date`, `report`, `clear`, `about`
+- `uuid`, `date`, `report`, `clear`, `about`, `download`\n- `disk`, `processes`, `ports`, `portcheck <host:port>`
 
 ## Build on Windows
 Run `build.bat` to create `dist/FrogTools.exe`, or use the GitHub Actions workflow and download the artifact.
